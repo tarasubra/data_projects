@@ -1,0 +1,75 @@
+import csv
+
+def read_data():
+    data = []
+
+    with open('sales.csv','r') as sales_csv:
+        spreadsheet = csv.DictReader(sales_csv)
+        for row in spreadsheet:
+            data.append(row)
+    print(data)
+    return data
+
+
+def run():
+    data = read_data()
+
+    sales = []
+    expenditures = []
+    for row in data:
+        sale = int(row['sales'])
+        expenditure = int(row['expenditure'])
+        sales.append(sale)
+        expenditures.append(expenditure)
+
+    #calculate total sales for the year 2018
+    total_sales = sum(sales)
+    print('Total sales: {}'.format(total_sales))
+
+    # calculate total expenses for the year 2018
+    total_expenses = sum(expenditures)
+    print('Total expenditure: {}'.format(total_expenses))
+
+    #calculate net profit for 2018
+    net_profit = total_sales - total_expenses
+    print('Net profit for 2018: {}'.format(net_profit))
+
+    #calculate average sales and expenses for 2018
+    average_sales = round(total_sales / len(sales),2)
+    print('The average sales is: {}'.format(average_sales))
+
+    # calculate average sales and expenses for 2018
+    average_expenses = round(total_expenses / len(expenditures), 2)
+    print('The average sales is: {}'.format(average_expenses))
+
+    #calculate average profit for 2018
+    average_profit = average_sales - average_expenses
+    print('The average profit is: {}'.format(average_profit))
+
+    #find the month with the highest & lowest sales
+    months = []
+    for row in data:
+        month = row['month']
+        months.append(month)
+
+    max_sales = max(sales)
+    min_sales = min(sales)
+    for i in range(len(sales)):
+        if sales[i] == max_sales:
+            j = i
+        if sales[i] == min_sales:
+            k = i
+
+    print('The month with the highest sales is: {}'.format(months[j]))
+    print('The month with the lowest sales is: {}'.format(months[k]))
+
+    #monthly changes as a percentage
+    monthly_change = []
+    for i in range(len(sales)-1):
+        percent_change = round(((sales[i+1]-sales[i])/sales[i])*100,2)
+        monthly_change.append(percent_change)
+
+    for i in range(len(sales)-1):
+        print('The percentage change in sales from {} to {} is: {}%'.format(months[i], months[i+1], monthly_change[i]))
+
+run()
